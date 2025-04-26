@@ -55,7 +55,7 @@ void cld80211_oem_send_reply(struct sk_buff *msg, void *hdr,
 				    struct nlattr *nest, int flags);
 
 /**
- * nl80211hdr_put() - API to allocate skb for cld80211 msg
+ * qca_nl80211hdr_put() - API to allocate skb for cld80211 msg
  * @hdr: nl80211hdr pointer
  * @portid: Port ID
  * @nest: pointer of vendor nested attribute
@@ -88,6 +88,21 @@ static inline void *nl80211hdr_put(struct sk_buff *skb, uint32_t portid,
 int nl_srv_ucast(struct sk_buff *skb, int dst_pid, int flag,
 			int app_id, int mcgroup_id);
 int nl_srv_bcast(struct sk_buff *skb, int mcgroup_id, int app_id);
+
+/**
+ * qca_nl80211hdr_put() - API to fill genlmsg header
+ * @skb: Sk buffer
+ * @portid: Port ID
+ * @seq: Sequence number
+ * @flags: Flags
+ * @cmd: Command id
+ *
+ * API to fill genl message header for brodcast events to user space
+ *
+ * Return: Pointer to user specific header/payload
+ */
+void *qca_nl80211hdr_put(struct sk_buff *skb, uint32_t portid,
+		     uint32_t seq, int flags, uint8_t cmd);
 #else
 int nl_srv_ucast(struct sk_buff *skb, int dst_pid, int flag);
 int nl_srv_bcast(struct sk_buff *skb);
