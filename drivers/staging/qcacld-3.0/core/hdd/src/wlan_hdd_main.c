@@ -17947,20 +17947,24 @@ EXPORT_SYMBOL(hdd_driver_unload);
 #ifdef FEATURE_WLAN_RESIDENT_DRIVER
 static int hdd_module_init(void)
 {
-	return 0;
+    return 0;
 }
 #else
 static int hdd_module_init(void)
 {
-	int ret;
+    int ret = 0;
 
-	ret = wlan_hdd_state_ctrl_param_create();
-	if (ret)
-		pr_err("wlan_hdd_state_create:%x\n", ret);
+#if defined(MODULE) && !defined(FEATURE_WLAN_RESIDENT_DRIVER)
+    ret = wlan_hdd_state_ctrl_param_create();
+    if (ret)
+        pr_err("wlan_hdd_state_create:%x\n", ret);
+#endif
 
-	return ret;
+    return ret;
 }
 #endif
+
+
 
 /**
  * hdd_module_exit() - Exit function
